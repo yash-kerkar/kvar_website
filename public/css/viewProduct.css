@@ -1,0 +1,25 @@
+.carousel {
+  width:30%;
+  height:250px;
+}
+
+.carousel img{
+  width:100%;
+  height:250px;
+  border:5px solid black;
+}
+
+table,tr,td,th{
+  text-align: center;
+  border:2px solid black;
+}
+
+#id:hover{
+  background-color: blue;
+}
+.img-thumb img{
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}

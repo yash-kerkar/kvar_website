@@ -1,0 +1,218 @@
+extends ./header.pug
+block content
+ main#main
+   // ======= Breadcrumbs =======
+   section.breadcrumbs
+     .container
+       ol
+         li
+           a(href='index.html') Home
+         li Blog
+       h2 Blog
+   // End Breadcrumbs
+   // ======= Blog Section =======
+   section#blog.blog
+     .container(data-aos='fade-up')
+       .row
+         .col-lg-8.entries
+           article.entry
+             .entry-img
+               img.img-fluid(src='assets/img/blog/blog-1.jpg' alt='')
+             h2.entry-title
+               a(href='blog-single.html') Dolorum optio tempore voluptas dignissimos cumque fuga qui quibusdam quia
+             .entry-meta
+               ul
+                 li.d-flex.align-items-center
+                   i.bi.bi-person
+                   a(href='blog-single.html') John Doe
+                 li.d-flex.align-items-center
+                   i.bi.bi-clock
+                   a(href='blog-single.html')
+                     time(datetime='2020-01-01') Jan 1, 2020
+                 li.d-flex.align-items-center
+                   i.bi.bi-chat-dots
+                   a(href='blog-single.html') 12 Comments
+             .entry-content
+               p
+                 | Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et laboriosam eius aut nostrum quidem aliquid dicta.
+                 | Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
+               .read-more
+                 a(href='blog-single.html') Read More
+           // End blog entry
+           article.entry
+             .entry-img
+               img.img-fluid(src='assets/img/blog/blog-2.jpg' alt='')
+             h2.entry-title
+               a(href='blog-single.html') Nisi magni odit consequatur autem nulla dolorem
+             .entry-meta
+               ul
+                 li.d-flex.align-items-center
+                   i.bi.bi-person
+                   a(href='blog-single.html') John Doe
+                 li.d-flex.align-items-center
+                   i.bi.bi-clock
+                   a(href='blog-single.html')
+                     time(datetime='2020-01-01') Jan 1, 2020
+                 li.d-flex.align-items-center
+                   i.bi.bi-chat-dots
+                   a(href='blog-single.html') 12 Comments
+             .entry-content
+               p
+                 | Incidunt voluptate sit temporibus aperiam. Quia vitae aut sint ullam quis illum voluptatum et. Quo libero rerum voluptatem pariatur nam.
+                 | Ad impedit qui officiis est in non aliquid veniam laborum. Id ipsum qui aut. Sit aliquam et quia molestias laboriosam. Tempora nam odit omnis eum corrupti qui aliquid excepturi molestiae. Facilis et sint quos sed voluptas. Maxime sed tempore enim omnis non alias odio quos distinctio.
+               .read-more
+                 a(href='blog-single.html') Read More
+           // End blog entry
+           article.entry
+             .entry-img
+               img.img-fluid(src='assets/img/blog/blog-3.jpg' alt='')
+             h2.entry-title
+               a(href='blog-single.html') Possimus soluta ut id suscipit ea ut. In quo quia et soluta libero sit sint.
+             .entry-meta
+               ul
+                 li.d-flex.align-items-center
+                   i.bi.bi-person
+                   a(href='blog-single.html') John Doe
+                 li.d-flex.align-items-center
+                   i.bi.bi-clock
+                   a(href='blog-single.html')
+                     time(datetime='2020-01-01') Jan 1, 2020
+                 li.d-flex.align-items-center
+                   i.bi.bi-chat-dots
+                   a(href='blog-single.html') 12 Comments
+             .entry-content
+               p
+                 | Aut iste neque ut illum qui perspiciatis similique recusandae non. Fugit autem dolorem labore omnis et. Eum temporibus fugiat voluptate enim tenetur sunt omnis.
+                 | Doloremque est saepe laborum aut. Ipsa cupiditate ex harum at recusandae nesciunt. Ut dolores velit.
+               .read-more
+                 a(href='blog-single.html') Read More
+           // End blog entry
+           article.entry
+             .entry-img
+               img.img-fluid(src='assets/img/blog/blog-4.jpg' alt='')
+             h2.entry-title
+               a(href='blog-single.html')
+                 | Non rem rerum nam cum quo minus. Dolor distinctio deleniti explicabo eius exercitationem.
+             .entry-meta
+               ul
+                 li.d-flex.align-items-center
+                   i.bi.bi-person
+                   a(href='blog-single.html') John Doe
+                 li.d-flex.align-items-center
+                   i.bi.bi-clock
+                   a(href='blog-single.html')
+                     time(datetime='2020-01-01') Jan 1, 2020
+                 li.d-flex.align-items-center
+                   i.bi.bi-chat-dots
+                   a(href='blog-single.html') 12 Comments
+             .entry-content
+               p
+                 | Aspernatur rerum perferendis et sint. Voluptates cupiditate voluptas atque quae. Rem veritatis rerum enim et autem. Saepe atque cum eligendi eaque iste omnis a qui.
+                 | Quia sed sunt. Ea asperiores expedita et et delectus voluptates rerum. Id saepe ut itaque quod qui voluptas nobis porro rerum. Quam quia nesciunt qui aut est non omnis. Inventore occaecati et quaerat magni itaque nam voluptas. Voluptatem ducimus sint id earum ut nesciunt sed corrupti nemo.
+               .read-more
+                 a(href='blog-single.html') Read More
+           // End blog entry
+           .blog-pagination
+             ul.justify-content-center
+               li
+                 a(href='#') 1
+               li.active
+                 a(href='#') 2
+               li
+                 a(href='#') 3
+         // End blog entries list
+         .col-lg-4
+           .sidebar
+             h3.sidebar-title Search
+             .sidebar-item.search-form
+               form(action='')
+                 input(type='text')
+                 button(type='submit')
+                   i.bi.bi-search
+             // End sidebar search formn
+             h3.sidebar-title Categories
+             .sidebar-item.categories
+               ul
+                 li
+                   a(href='#')
+                     | General 
+                     span (25)
+                 li
+                   a(href='#')
+                     | Lifestyle 
+                     span (12)
+                 li
+                   a(href='#')
+                     | Travel 
+                     span (5)
+                 li
+                   a(href='#')
+                     | Design 
+                     span (22)
+                 li
+                   a(href='#')
+                     | Creative 
+                     span (8)
+                 li
+                   a(href='#')
+                     | Educaion 
+                     span (14)
+             // End sidebar categories
+             h3.sidebar-title Recent Posts
+             .sidebar-item.recent-posts
+               .post-item.clearfix
+                 img(src='assets/img/blog/blog-recent-1.jpg' alt='')
+                 h4
+                   a(href='blog-single.html') Nihil blanditiis at in nihil autem
+                 time(datetime='2020-01-01') Jan 1, 2020
+               .post-item.clearfix
+                 img(src='assets/img/blog/blog-recent-2.jpg' alt='')
+                 h4
+                   a(href='blog-single.html') Quidem autem et impedit
+                 time(datetime='2020-01-01') Jan 1, 2020
+               .post-item.clearfix
+                 img(src='assets/img/blog/blog-recent-3.jpg' alt='')
+                 h4
+                   a(href='blog-single.html') Id quia et et ut maxime similique occaecati ut
+                 time(datetime='2020-01-01') Jan 1, 2020
+               .post-item.clearfix
+                 img(src='assets/img/blog/blog-recent-4.jpg' alt='')
+                 h4
+                   a(href='blog-single.html') Laborum corporis quo dara net para
+                 time(datetime='2020-01-01') Jan 1, 2020
+               .post-item.clearfix
+                 img(src='assets/img/blog/blog-recent-5.jpg' alt='')
+                 h4
+                   a(href='blog-single.html') Et dolores corrupti quae illo quod dolor
+                 time(datetime='2020-01-01') Jan 1, 2020
+             // End sidebar recent posts
+             h3.sidebar-title Tags
+             .sidebar-item.tags
+               ul
+                 li
+                   a(href='#') App
+                 li
+                   a(href='#') IT
+                 li
+                   a(href='#') Business
+                 li
+                   a(href='#') Mac
+                 li
+                   a(href='#') Design
+                 li
+                   a(href='#') Office
+                 li
+                   a(href='#') Creative
+                 li
+                   a(href='#') Studio
+                 li
+                   a(href='#') Smart
+                 li
+                   a(href='#') Tips
+                 li
+                   a(href='#') Marketing
+             // End sidebar tags
+           // End sidebar
+         // End blog sidebar
+   // End Blog Section
+ // End #main

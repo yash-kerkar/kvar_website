@@ -1,0 +1,69 @@
+extends ./header.pug
+block content
+ main#main
+   // ======= Breadcrumbs =======
+   section.breadcrumbs
+     .container
+       ol
+         li
+           a(href='index.html') Home
+         li Portfolio Details
+       h2 Portfolio Details
+   // End Breadcrumbs
+   // ======= Portfolio Details Section =======
+   section#portfolio-details.portfolio-details
+     .container
+       .row.gy-4
+         .col-lg-8
+           .portfolio-details-slider.swiper
+             .swiper-wrapper.align-items-center
+              each image in category.images
+               .swiper-slide
+                 img(src='/img/'+image.filename alt='')
+             .swiper-pagination
+         .col-lg-4
+           .portfolio-info
+             h3 Category information
+             ul
+               li
+                 strong Category:
+                   = category.name
+               li
+                 strong Client
+                 | : ASU Company
+               li
+                 strong Project date
+                 | : 01 March, 2020
+               li
+                 strong Project URL
+                 | : 
+                 a(href='#') www.example.com
+           .portfolio-description
+             h2 About 
+               = category.name
+             p
+               = category.description
+     section#portfolio.portfolio
+      .container(data-aos='fade-up')
+       header.section-header
+         p Our Products
+       .row(data-aos='fade-up' data-aos-delay='100')
+         .col-lg-12.d-flex.justify-content-center
+       .row.gy-4.portfolio-container(data-aos='fade-up' data-aos-delay='200')
+         each product in products
+          .col-lg-4.col-md-6.portfolio-item.filter-app
+           .portfolio-wrap
+             img.img-fluid(src="/img/"+product.images[0].filename alt='')
+             .portfolio-info
+               h4 
+                 = product.name
+               p App
+               .portfolio-links
+                 a.portfokio-lightbox(href='/../assets/img/portfolio/Panel Mount KV2020.png' data-gallery='portfolioGallery' title='App 1')
+                   i.bi.bi-plus
+                 a(href='/products/'+product._id title='More Details')
+                   i.bi.bi-link
+             p 
+                   = product.name
+   // End Portfolio Details Section
+ // End #main
