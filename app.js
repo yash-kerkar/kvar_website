@@ -26,6 +26,7 @@ app.use('/admin',adminRoutes)
         category:category
     })
 })*/
+const PORT = process.env.PORT || 3000;
 
 app.get('/',async function(req,res){
     var bseller = await query.fetchBSellers();
@@ -70,4 +71,6 @@ app.get('*', function(req, res){
     res.send('Sorry, this is an invalid URL.');
 }); 
 
-app.listen(3000);
+app.listen(PORT,()=>{
+    console.log(`App up at port ${PORT}`)
+});
