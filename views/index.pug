@@ -384,19 +384,9 @@ block content
        .row.gy-4.portfolio-container(data-aos='fade-up' data-aos-delay='200')
         
         -for(let i=0;i<length;i++){
-         .col-lg-4.col-md-6.portfolio-item.filter-app
-           .portfolio-wrap
-             img.img-fluid(src='/img/'+categories[i].images[0].filename alt='')
-             .portfolio-info
-               h4 
-                 = categories[i].name
-               p 
-                 = categories[i].name
-               .portfolio-links
-                 a.portfokio-lightbox(href='/img/'+categories[i].images[0].filename data-gallery='portfolioGallery' title=categories[i].name)
-                   i.bi.bi-plus
-                 a(href='/category/'+categories[i]._id title='More Details')
-                   i.bi.bi-link
+           .col-lg-4.col-md-6.portfolio-item.filter-app
+              a(href="/category/"+categories[i]._id)
+                img.img-fluid(src='https://kvartech.herokuapp.com/img/'+categories[i].images[0].filename alt='')
         -}
          
    // End Portfolio Section /Product category
