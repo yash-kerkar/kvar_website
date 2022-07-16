@@ -2,7 +2,6 @@ const res = require('express/lib/response');
 const {MongoClient, ObjectId} = require('mongodb');
 //const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const uri = "mongodb://localhost";
-const admin_id = "62d2a2149461119244066822";
 const client = new MongoClient(uri);
 
 module.exports = {
@@ -384,7 +383,8 @@ module.exports = {
             await client.connect();
      
             // Make the appropriate DB calls
-            updated = await client.db("kvar").collection("admin").findOneAndUpdate({_id:ObjectId(admin_id)},{
+            let admin = await client.db("kvar").collection("admin").find().toArray();
+            updated = await client.db("kvar").collection("admin").findOneAndUpdate({_id:admin[0]._id},{
                  $set:{"password":pass}
             });
      
@@ -406,13 +406,13 @@ module.exports = {
             await client.connect();
      
             // Make the appropriate DB calls
-            admin = await client.db("kvar").collection("admin").findOne(ObjectId(admin_id));
+            admin = await client.db("kvar").collection("admin").find().toArray();
      
         } catch (e) {
             console.error(e);
         } finally {
             await client.close();
-            return admin
+            return admin[0];
         }
     },
 
