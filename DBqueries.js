@@ -1,10 +1,14 @@
 const res = require('express/lib/response');
 const {MongoClient, ObjectId} = require('mongodb');
+//const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = "mongodb://localhost";
+const admin_id = "62d2a2149461119244066822";
+const client = new MongoClient(uri);
+
 module.exports = {
     addProduct:async function addProduct(product){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true
      
         try {
@@ -25,9 +29,8 @@ module.exports = {
     },
 
     addCategory:async function addCategory(category){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true
      
         try {
@@ -48,9 +51,8 @@ module.exports = {
     },
     
     fetchAllProducts:async function fetchAllProducts(cat_count){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var result = null
         var count_cat_wise = {}
      
@@ -83,9 +85,8 @@ module.exports = {
     },
 
     fetchAllCategories:async function fetchAllCategories(){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var result = null
      
         try {
@@ -105,9 +106,8 @@ module.exports = {
     },
     
     fetchProduct:async function fetchProduct(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
         var result = null
-        const client = new MongoClient(uri);
+    
         try{
             await client.connect();
             result = await client.db("kvar").collection("products").findOne(ObjectId(id));
@@ -122,9 +122,8 @@ module.exports = {
     },
 
     fetchCategory:async function fetchCategory(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
         var result = null
-        const client = new MongoClient(uri);
+    
         try{
             await client.connect();
             result = await client.db("kvar").collection("category").findOne(ObjectId(id));
@@ -139,9 +138,8 @@ module.exports = {
     },
 
     fetchCategoryByName:async function fetchCategoryByName(name){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
         var result = null
-        const client = new MongoClient(uri);
+    
         try{
             await client.connect();
             result = await client.db("kvar").collection("category").findOne({name:name});
@@ -156,8 +154,7 @@ module.exports = {
     },
 
     fetchCategoryProducts:async function fetchCategoryProducts(category){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-        const client = new MongoClient(uri);
+    
         var result = null;
         try{
             await client.connect();
@@ -171,8 +168,7 @@ module.exports = {
     },
 
     fetchCategoryProductsByID:async function fetchCategoryProductsByID(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-        const client = new MongoClient(uri);
+    
         var result = null;
         try{
             await client.connect();
@@ -187,9 +183,8 @@ module.exports = {
     },
     
     updateProduct:async function updateProduct(id,product){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
         var val = true;
-        const client = new MongoClient(uri);
+    
         console.log(product.deleteImages)
         try{
             await client.connect();
@@ -217,9 +212,8 @@ module.exports = {
 
     updateCategory:async function updateCategory(id,category){
         console.log(id)
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
         var val = true;
-        const client = new MongoClient(uri);
+    
         console.log(category.deleteImages)
         try{
             await client.connect();
@@ -246,9 +240,8 @@ module.exports = {
     },
     
     deleteProduct:async function deleteProduct(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true
      
         try {
@@ -269,9 +262,8 @@ module.exports = {
     },
 
     deleteCategory:async function deleteCategory(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true
      
         try {
@@ -292,9 +284,8 @@ module.exports = {
     },
 
     searchProducts:async function searchProducts(name){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true;
         try {
             // Connect to the MongoDB cluster
@@ -314,9 +305,8 @@ module.exports = {
     },
 
     addBSeller:async function addBSeller(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true;
         try {
             // Connect to the MongoDB cluster
@@ -342,9 +332,8 @@ module.exports = {
 
 
     removeBSeller:async function removeBSeller(id){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true;
         try {
             // Connect to the MongoDB cluster
@@ -364,9 +353,8 @@ module.exports = {
     },
 
     fetchBSellers:async function fetchBSellers(){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true;
         try {
             // Connect to the MongoDB cluster
@@ -387,9 +375,8 @@ module.exports = {
     },
     
     updatePassword:async function updatePassword(pass){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
         var x = true
      
         try {
@@ -397,7 +384,7 @@ module.exports = {
             await client.connect();
      
             // Make the appropriate DB calls
-            updated = await client.db("kvar").collection("admin").findOneAndUpdate({_id:ObjectId("61cd5f9464f84fdc2f5dc863")},{
+            updated = await client.db("kvar").collection("admin").findOneAndUpdate({_id:ObjectId(admin_id)},{
                  $set:{"password":pass}
             });
      
@@ -411,16 +398,15 @@ module.exports = {
     },
     
     getAdmin:async function getAdmin(){
-        const uri = "mongodb+srv://yash:1234@medistore.pleat.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
      
-        const client = new MongoClient(uri);
+    
      
         try {
             // Connect to the MongoDB cluster
             await client.connect();
      
             // Make the appropriate DB calls
-            admin = await client.db("kvar").collection("admin").findOne(ObjectId("61cd5f9464f84fdc2f5dc863"));
+            admin = await client.db("kvar").collection("admin").findOne(ObjectId(admin_id));
      
         } catch (e) {
             console.error(e);
