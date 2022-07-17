@@ -13,8 +13,9 @@ app.use(methodOverride('_method'));
 app.use(expressSession({secret:'secret', resave: false,saveUninitialized: true,}))
 app.use('/admin',adminRoutes)
 
+//xyz
 //admin_pass = "12345"
-//mongosh "mongodb+srv://medistore.pleat.mongodb.net/myFirstDatabase" --username yash  -- command for connecting mongosh to cluster
+// mongosh "mongodb+srv://medistore.pleat.mongodb.net/myFirstDatabase"--username yash  -- command for connecting mongosh to cluster
 
 /*app.get('/category/:category_name',async function(req,res){
     var str = req.params.category_name.replace("-"," ")
