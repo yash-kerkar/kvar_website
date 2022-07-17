@@ -72,6 +72,6 @@ app.get('*', function(req, res){
     res.send('Sorry, this is an invalid URL.');
 }); 
 
-app.listen(PORT,()=>{
-    console.log(`App up at port ${PORT}`)
+app.listen(PORT,'127.0.0.1',()=>{
+    console.log(`App is started`)
 });
