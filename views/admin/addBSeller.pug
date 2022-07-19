@@ -39,9 +39,9 @@ block content
             p Pages:
             while n <= page_count
               if n == cur_page
-                a(href="products?page="+n id="active")
+                a(href="addBSeller?page="+n id="active")
                   = n
               else 
-                a(href="products?page="+n)
+                a(href="addBSeller?page="+n)
                   = n
               -n = n + 1

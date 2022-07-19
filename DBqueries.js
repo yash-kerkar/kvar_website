@@ -23,7 +23,27 @@ module.exports = {
             x = false
         } finally {
             await client.close();
-            return product._id
+            return product._id;
+        }
+    },
+
+    addModel:async function addModel(id,model){
+        try {
+            // Connect to the MongoDB cluster
+            await client.connect();
+            model._id = new ObjectId();
+            // Make the appropriate DB calls
+            result = await client.db("kvar").collection("products").findOneAndUpdate({_id:ObjectId(id)},{
+                $push:{"models":model}
+            });
+            console.log("Model Inserted: "+model.name)
+     
+        } catch (e) {
+            console.error(e);
+            x = false
+        } finally {
+            await client.close();
+            return model._id
         }
     },
 
@@ -83,6 +103,26 @@ module.exports = {
         }
     },
 
+    fetchAllModels:async function fetchAllModels(id){
+        
+        var result = null
+     
+        try {
+            // Connect to the MongoDB cluster
+            await client.connect();
+     
+            // Make the appropriate DB calls
+            result = await client.db("kvar").collection("products").findOne(ObjectId(id));
+     
+        } catch (e) {
+            console.error(e);
+            result = null;
+        } finally {
+            await client.close();
+            return result.models;
+        }
+    },
+
     fetchAllCategories:async function fetchAllCategories(){
      
     
@@ -110,6 +150,32 @@ module.exports = {
         try{
             await client.connect();
             result = await client.db("kvar").collection("products").findOne(ObjectId(id));
+    
+        }catch(e){
+            console.log(e);
+            result = null;
+        }finally{
+            await client.close();
+            return result
+        }
+    },
+
+    fetchModel:async function fetchModel(product_id,id){
+        var result = null
+    
+        try{
+            await client.connect();
+            result = await client.db("kvar").collection("products").findOne(ObjectId(product_id));
+            let i = 0;
+            console.log(ObjectId(id))
+            while(result.models[i]){
+                if(result.models[i]._id.equals(id)){
+                    result = result.models[i];
+                    break;
+                } 
+                console.log("yes");
+                i++;
+            }
     
         }catch(e){
             console.log(e);
@@ -209,6 +275,29 @@ module.exports = {
         }
     },
 
+    updateModel:async function updateModel(id,model){
+        var val = true;
+    
+        try{
+            await client.connect();
+            result = await client.db("kvar").collection("products").findOne({_id:ObjectId(id)});
+            let models = result.models;
+            models[0].name = model.name;
+            models[0].description = model.description;
+            if(model.uploadImages[0]) models[0].images = model.uploadImages;
+                    
+            result = await client.db("kvar").collection("products").findOneAndUpdate({_id:ObjectId(id)},{
+                $set:{"models":models
+               }})
+        }catch(e){
+            console.log(e);
+            val = false;
+        }finally{
+            await client.close();
+            return val
+        }
+    },
+
     updateCategory:async function updateCategory(id,category){
         console.log(id)
         var val = true;
@@ -250,6 +339,38 @@ module.exports = {
             // Make the appropriate DB calls
             product = await client.db("kvar").collection("products").findOne(ObjectId(id));
             result = await client.db("kvar").collection("products").findOneAndDelete({_id:ObjectId(id)})
+     
+        } catch (e) {
+            console.error(e);
+            x = false
+        } finally {
+            await client.close();
+            return [x,product]
+        }
+    },
+
+    deleteModel:async function deleteModel(product_id,model_id){
+     
+    
+        var x = true
+     
+        try {
+            // Connect to the MongoDB cluster
+            await client.connect();
+     
+            // Make the appropriate DB calls
+            product = await client.db("kvar").collection("products").findOne(ObjectId(product_id));
+
+            result = await client.db("kvar").collection("products").updateOne({
+                "_id": ObjectId(product_id)
+              },
+              {
+                "$pull": {
+                  "models": {
+                    "_id": ObjectId(model_id)
+                  }
+                }
+            })
      
         } catch (e) {
             console.error(e);

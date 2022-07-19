@@ -1,4 +1,6 @@
-const express = require('express')
+const express = require('express');
+const res = require('express/lib/response');
+const { model } = require('mongoose');
     multer = require('multer');
     router = express.Router()
     path = require('path');
@@ -24,7 +26,7 @@ const requireLogin = (req,res,next) => {
 /*router.get('/example',function(req,res){
     res.render('admin/example')
 })*/
-router.get('/',requireLogin,async function(req,res){
+router.get('/',/*requireLogin,*/async function(req,res){
     let productsCatWise = await query.fetchAllProducts(true)
     console.log(productsCatWise)
     res.render('admin/index',{
@@ -33,7 +35,7 @@ router.get('/',requireLogin,async function(req,res){
     });
 });
 
-router.get('/addProduct',requireLogin,async function(req,res){
+router.get('/addProduct',/*requireLogin,*/async function(req,res){
     let categories = await query.fetchAllCategories()
     console.log("category"+categories)
     fs.readdir(directoryPath, function (err, files) {
@@ -55,27 +57,39 @@ router.get('/addProduct',requireLogin,async function(req,res){
     })
 })
 
-router.get('/addCategory',requireLogin,async function(req,res){
+router.get('/products/:id/addmodel',function(req,res){
+    res.render('admin/addModel',{id:req.params.id,insertRequest:false});
+})
+
+router.post('/products/:id/addModel',upload.array('images'),async function(req,res){
+    let model = req.body.model;
+    model.images = req.files.map(f=>({url:f.path,filename:f.filename}));
+    let id = await query.addModel(req.params.id,model);
+    res.redirect('/admin/products/'+req.params.id);
+})
+
+router.get('/addCategory',/*requireLogin,*/async function(req,res){
     res.render('admin/addCategory')
 })
 
 
-router.post('/addProduct',requireLogin,upload.array('images'),async function(req,res){
+router.post('/addProduct',/*requireLogin,*/upload.array('images'),async function(req,res){
     let product = req.body.product
+    console.log(req.body)
     product.details = convert_to_object(product.details)
     product.images = req.files.map(f=>({url:f.path,filename:f.filename}))
     let id = await query.addProduct(product)
     res.redirect('products/'+id)
 })
 
-router.post('/addCategory',requireLogin,upload.array('images'),async function(req,res){
+router.post('/addCategory',/*requireLogin,*/upload.array('images'),async function(req,res){
     var category = req.body.category
     category.images = req.files.map(f=>({url:f.path,filename:f.filename}))
     var id = await query.addCategory(category)
     res.redirect('categories/'+id)
 })
 
-router.get('/addBSeller',requireLogin,async function(req,res){
+router.get('/addBSeller',/*requireLogin,*/async function(req,res){
     let page = 1;
     if(req.query.page){
         page = req.query.page
@@ -91,31 +105,31 @@ router.get('/addBSeller',requireLogin,async function(req,res){
     });
 })
 
-router.post("/addBSeller",requireLogin,async function(req,res){
+router.post("/addBSeller",/*requireLogin,*/async function(req,res){
     var val = await query.searchProducts(req.body.name);
     res.render('admin/addBSeller',{
         products:val
     })
 })
 
-router.post('/addBSeller/:id',requireLogin,async function(req,res){
+router.post('/addBSeller/:id',/*requireLogin,*/async function(req,res){
     var val = await query.addBSeller(req.params.id);
     res.redirect("../BSellers");
 })
 
-router.get('/BSellers',requireLogin,async function(req,res){
+router.get('/BSellers',/*requireLogin,*/async function(req,res){
     var val = await query.fetchBSellers();
     res.render('admin/viewBSellers',{
         products:val
     });
 })
 
-router.post('/removeBSeller/:id',requireLogin,async function(req,res){
+router.post('/removeBSeller/:id',/*requireLogin,*/async function(req,res){
     var val = await query.removeBSeller(req.params.id);
     res.redirect('../BSellers');
 })
 
-router.get('/products',requireLogin,async function(req,res){
+router.get('/products',/*requireLogin,*/async function(req,res){
     let page = 1;
     if(req.query.page){
         page = req.query.page
@@ -131,35 +145,42 @@ router.get('/products',requireLogin,async function(req,res){
     })
 })
 
-router.post("/products",requireLogin,async function(req,res){
+router.post("/products",/*requireLogin,*/async function(req,res){
     var val = await query.searchProducts(req.body.name);
     res.render('admin/viewProducts',{
         products:val
     })
 })
 
-router.get('/categories',requireLogin,async function(req,res){
+
+router.get('/categories',/*requireLogin,*/async function(req,res){
     var val = await query.fetchAllCategories()
     res.render('admin/viewCategories',{
         categories:val
     })
 })
 
-router.get("/products/:id",requireLogin,async function(req,res){
+router.get("/products/:id",/*requireLogin,*/async function(req,res){
     var product = await query.fetchProduct(req.params.id)
     res.render("admin/viewProduct",{
         product:product
     })
 })
 
-router.get("/categories/:id",requireLogin,async function(req,res){
+router.get('/products/:id/models',async function(req,res){
+    var models = await query.fetchAllModels(req.params.id);
+    res.render('admin/viewModels',{models:models,product_id:req.params.id});
+})
+
+
+router.get("/categories/:id",/*requireLogin,*/async function(req,res){
     var category = await query.fetchCategory(req.params.id)
     res.render("admin/viewCategory",{
         category:category
     })
 })
 
-router.get('/products/:id/edit',requireLogin,async function(req,res){
+router.get('/products/:id/edit',/*requireLogin,*/async function(req,res){
     var val = await query.fetchProduct(req.params.id)
     var categories = await query.fetchAllCategories()
     fs.readdir(directoryPath, function (err, files) {
@@ -182,7 +203,7 @@ router.get('/products/:id/edit',requireLogin,async function(req,res){
     })
 })
 
-router.get('/categories/:id/edit',requireLogin,async function(req,res){
+router.get('/categories/:id/edit',/*requireLogin,*/async function(req,res){
     var val = await query.fetchCategory(req.params.id)
     res.render("admin/editCategory",{
         updateRequest:false,
@@ -190,7 +211,38 @@ router.get('/categories/:id/edit',requireLogin,async function(req,res){
     })
 })
 
-router.put('/products/:id/edit',requireLogin,upload.array('images'),async function(req,res){
+router.get("/products/:product_id/models/:id/edit",async function(req,res){
+    var model = await query.fetchModel(req.params.product_id,req.params.id);
+    res.render("admin/editModel",{
+        updateRequest:false,
+        product_id:req.params.product_id,
+        model:model
+    })
+})
+
+router.put('/products/:product_id/models/:model_id/edit',/*requireLogin,*/upload.array('images'),async function(req,res){
+    var uploadImages = []
+    var deleteImages = []
+    var model = req.body.model
+    if(req.files) uploadImages = req.files.map(f=>({url:f.path,filename:f.filename}))
+    if(req.body.deleteImages) deleteImages = req.body.deleteImages
+    model.uploadImages = uploadImages
+    model.deleteImages = deleteImages
+    var val = await query.updateModel(req.params.product_id,model)
+    if(val){
+        deleteImages.forEach(image => {
+            fs.unlink("public/img/"+image, (err) => {
+                if (err) {
+                  console.error(err)
+                  return
+            } 
+          })
+        });
+    }
+    res.redirect("../../../../products/"+req.params.product_id)
+})
+
+router.put('/products/:id/edit',/*requireLogin,*/upload.array('images'),async function(req,res){
     var uploadImages = []
     var deleteImages = []
     var product = req.body.product
@@ -213,7 +265,7 @@ router.put('/products/:id/edit',requireLogin,upload.array('images'),async functi
     res.redirect("../../products/"+req.params.id)
 })
 
-router.put('/categories/:id/edit',requireLogin,upload.array('images'),async function(req,res){
+router.put('/categories/:id/edit',/*requireLogin,*/upload.array('images'),async function(req,res){
     var uploadImages = []
     var deleteImages = []
     var category = req.body.category
@@ -235,7 +287,7 @@ router.put('/categories/:id/edit',requireLogin,upload.array('images'),async func
     res.redirect("../../categories/"+req.params.id)
 })
 
-router.delete('/products/:id/delete',requireLogin,async function(req,res){
+router.delete('/products/:id/delete',/*requireLogin,*/async function(req,res){
     var val = await query.deleteProduct(req.params.id)
     if(val[0] == true){
         val[1].images.forEach(image => {
@@ -251,7 +303,12 @@ router.delete('/products/:id/delete',requireLogin,async function(req,res){
     res.redirect("../../products");
 })
 
-router.delete('/categories/:id/delete',requireLogin,async function(req,res){
+router.delete('/products/:product_id/models/:model_id/delete',/*requireLogin,*/async function(req,res){
+    var val = await query.deleteModel(req.params.product_id,req.params.model_id)
+    res.redirect("../../../../products/"+req.params.product_id);
+})
+
+router.delete('/categories/:id/delete',/*requireLogin,*/async function(req,res){
     var val = await query.deleteCategory(req.params.id)
     if(val[0] == true){
         val[1].images.forEach(image => {
@@ -286,11 +343,11 @@ router.post('/login',async function(req,res){
     else res.redirect('/admin/login?invalid=true')
 })
 
-router.get('/changePassword',requireLogin,function(req,res){
+router.get('/changePassword',/*requireLogin,*/function(req,res){
     res.render('admin/changePassword')
 })
 
-router.post('/changePassword',requireLogin,async function(req,res){
+router.post('/changePassword',/*requireLogin,*/async function(req,res){
     const pass = req.body.password
     const hash = await bcrypt.hash(pass,12)
     updated = await query.updatePassword(hash)
@@ -298,7 +355,7 @@ router.post('/changePassword',requireLogin,async function(req,res){
     else res.send("Error in updating")
 });
 
-router.post('/logout',requireLogin,function(req,res){
+router.post('/logout',/*requireLogin,*/function(req,res){
     req.session.destroy()
     res.redirect('/admin/login')
 })
