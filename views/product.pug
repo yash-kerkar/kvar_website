@@ -139,6 +139,9 @@ block content
             br
             h3 
                 = model.name
-            p(align='justify-content')
-                = model.description
+            -let x = model.description.split("\n")
+            ul
+            each line in x
+              li
+                = line
     

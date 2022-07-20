@@ -34,11 +34,14 @@ block content
        .row(data-aos='fade-up' data-aos-delay='100')
          .col-lg-12.d-flex.justify-content-center
        .row.gy-4.portfolio-container(data-aos='fade-up' data-aos-delay='200')
-         each product in products
+        each product in products
+         a(href="/products/"+product._id)
           .col-lg-4.col-md-6.portfolio-item.filter-app
-            a(href="/products/"+product._id)
-             img.img-fluid(src="/img/"+product.images[0].filename alt='')
-             p 
-                   = product.name
+            center
+              img.img-fluid(src='/img/'+product.images[0].filename alt='' width='250' height='500')
+              .col-lg-10
+                .portfolio-description
+                  h3 
+                    = product.name
    // End Portfolio Details Section
  // End #main
