@@ -5,6 +5,7 @@ var express = require('express');
     adminRoutes = require('./routes/admin'); 
     app = express();
     query = require('./DBqueries');
+    constant = require('./constant');
 app.set('views','./views');
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'pug');
@@ -29,16 +30,25 @@ app.use('/admin',adminRoutes)
 })*/
 const PORT = process.env.PORT || 3000;
 
+
 app.get('/',async function(req,res){
     var bseller = await query.fetchBSellers();
+    console.log(constant.categories,constant.products)
     var categories = await query.fetchAllCategories();
-    res.render('index',{bseller:bseller,categories:categories,length:categories.length});
+    res.render('index',{
+        nav_products:constant.products,
+        nav_categories:constant.categories,
+        categories:categories,
+        bseller:bseller,
+        length:constant.categories.length});
 })
 
 app.get("/category/:id",async function(req,res){
     var category = await query.fetchCategory(req.params.id);
     var products = await query.fetchCategoryProducts(category.name);
     res.render("category",{
+        nav_products:constant.products,
+        nav_categories:constant.categories,
         category:category,
         products:products
     })
@@ -48,24 +58,38 @@ app.get("/category/:id",async function(req,res){
 app.get('/products/:id',async function(req,res){
     var product = await query.fetchProduct(req.params.id)
     res.render('product',{
+        nav_products:constant.products,
+        nav_categories:constant.categories,
         product:product
     })
 })
 
 app.get('/contact',function(req,res){
-    res.render('contact');
+    res.render('contact',{
+        nav_products:constant.products,
+        nav_categories:constant.categories
+    });
 })
 
 app.get('/about',function(req,res){
-    res.render('about');
+    res.render('about',{
+        nav_products:constant.products,
+        nav_categories:constant.categories
+    });
 })
 
 app.get('/presentation',function(req,res){
-    res.render('presentation');
+    res.render('presentation',{
+        nav_products:constant.products,
+        nav_categories:constant.categories
+    });
 })
 
 app.get('/blogs',function(req,res){
-    res.render('blogs');
+    res.render('blogs',{
+        nav_products:constant.products,
+        nav_categories:constant.categories
+    });
 })
 
 app.get('*', function(req, res){
@@ -75,3 +99,4 @@ app.get('*', function(req, res){
 app.listen(PORT,'127.0.0.1',()=>{
     console.log(`App is started`)
 });
+

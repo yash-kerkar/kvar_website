@@ -275,16 +275,21 @@ module.exports = {
         }
     },
 
-    updateModel:async function updateModel(id,model){
+    updateModel:async function updateModel(id,model_id,model){
         var val = true;
     
         try{
             await client.connect();
             result = await client.db("kvar").collection("products").findOne({_id:ObjectId(id)});
             let models = result.models;
-            models[0].name = model.name;
-            models[0].description = model.description;
-            if(model.uploadImages[0]) models[0].images = model.uploadImages;
+            let i = 0;
+            while(models[i]){
+                if(models[i]._id.equals(model_id)) break;
+                i++;
+            }
+            models[i].name = model.name;
+            models[i].description = model.description;
+            if(model.uploadImages[0]) models[i].images = model.uploadImages;
                     
             result = await client.db("kvar").collection("products").findOneAndUpdate({_id:ObjectId(id)},{
                 $set:{"models":models
@@ -353,6 +358,7 @@ module.exports = {
      
     
         var x = true
+        var model;
      
         try {
             // Connect to the MongoDB cluster
@@ -360,6 +366,17 @@ module.exports = {
      
             // Make the appropriate DB calls
             product = await client.db("kvar").collection("products").findOne(ObjectId(product_id));
+
+            let i = 0;
+            let models = product.models;
+
+            while(models[i]){
+                if(models[i]._id.equals(model_id)) {
+                    model = product.models[i];
+                    break;
+                }
+                i++;
+            }
 
             result = await client.db("kvar").collection("products").updateOne({
                 "_id": ObjectId(product_id)
@@ -377,7 +394,7 @@ module.exports = {
             x = false
         } finally {
             await client.close();
-            return [x,product]
+            return [x,model]
         }
     },
 

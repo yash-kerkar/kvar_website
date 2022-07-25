@@ -13,9 +13,19 @@ const { model } = require('mongoose');
         callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));  
      }  
     });
+    storage1 = multer.diskStorage({  
+        destination: function (req, file, callback) {  
+        callback(null, './public/brochures');  
+     },  
+        filename: function (req, file, callback) { 
+        callback(null, file.originalname);  
+     }  
+    });
     upload = multer({ storage: storage }) 
+    upload1 = multer({ storage: storage1 }) 
     bcrypt = require('bcrypt');
     query = require('../DBqueries');
+    constant = require('../constant');
 const directoryPath = path.join(__dirname, '../public/brochures');
 
 const requireLogin = (req,res,next) => {
@@ -23,12 +33,13 @@ const requireLogin = (req,res,next) => {
     next()
 }
 
+navigation_content();
+
 /*router.get('/example',function(req,res){
     res.render('admin/example')
 })*/
 router.get('/',requireLogin,async function(req,res){
     let productsCatWise = await query.fetchAllProducts(true)
-    console.log(productsCatWise)
     res.render('admin/index',{
         user:"yash",
         productsCatWise:productsCatWise
@@ -79,6 +90,7 @@ router.post('/addProduct',requireLogin,upload.array('images'),async function(req
     product.details = convert_to_object(product.details)
     product.images = req.files.map(f=>({url:f.path,filename:f.filename}))
     let id = await query.addProduct(product)
+    await navigation_content()
     res.redirect('products/'+id)
 })
 
@@ -86,6 +98,7 @@ router.post('/addCategory',requireLogin,upload.array('images'),async function(re
     var category = req.body.category
     category.images = req.files.map(f=>({url:f.path,filename:f.filename}))
     var id = await query.addCategory(category)
+    await navigation_content()
     res.redirect('categories/'+id)
 })
 
@@ -162,6 +175,7 @@ router.get('/categories',requireLogin,async function(req,res){
 
 router.get("/products/:id",requireLogin,async function(req,res){
     var product = await query.fetchProduct(req.params.id)
+    console.log(product)
     res.render("admin/viewProduct",{
         product:product
     })
@@ -194,6 +208,7 @@ router.get('/products/:id/edit',requireLogin,async function(req,res){
             // Do whatever you want to do with the file
             brochures.push(file)
         });
+        console.log(brochures)
         res.render("admin/editProduct",{
             updateRequest:false,
             product:val,
@@ -228,7 +243,8 @@ router.put('/products/:product_id/models/:model_id/edit',requireLogin,upload.arr
     if(req.body.deleteImages) deleteImages = req.body.deleteImages
     model.uploadImages = uploadImages
     model.deleteImages = deleteImages
-    var val = await query.updateModel(req.params.product_id,model)
+    var val = await query.updateModel(req.params.product_id,req.params.model_id,model)
+    res.redirect("../../../../products/"+req.params.product_id)
     if(val){
         deleteImages.forEach(image => {
             fs.unlink("public/img/"+image, (err) => {
@@ -239,7 +255,6 @@ router.put('/products/:product_id/models/:model_id/edit',requireLogin,upload.arr
           })
         });
     }
-    res.redirect("../../../../products/"+req.params.product_id)
 })
 
 router.put('/products/:id/edit',requireLogin,upload.array('images'),async function(req,res){
@@ -252,6 +267,8 @@ router.put('/products/:id/edit',requireLogin,upload.array('images'),async functi
     product.uploadImages = uploadImages
     product.deleteImages = deleteImages
     var val = await query.updateProduct(req.params.id,product)
+    await navigation_content();
+    res.redirect("../../products/"+req.params.id)
     if(val){
         deleteImages.forEach(image => {
             fs.unlink("public/img/"+image, (err) => {
@@ -262,7 +279,6 @@ router.put('/products/:id/edit',requireLogin,upload.array('images'),async functi
           })
         });
     }
-    res.redirect("../../products/"+req.params.id)
 })
 
 router.put('/categories/:id/edit',requireLogin,upload.array('images'),async function(req,res){
@@ -274,6 +290,8 @@ router.put('/categories/:id/edit',requireLogin,upload.array('images'),async func
     category.uploadImages = uploadImages
     category.deleteImages = deleteImages
     var val = await query.updateCategory(req.params.id,category)
+    await navigation_content();
+    res.redirect("../../categories/"+req.params.id)
     if(val){
         deleteImages.forEach(image => {
             fs.unlink("public/img/"+image, (err) => {
@@ -284,11 +302,12 @@ router.put('/categories/:id/edit',requireLogin,upload.array('images'),async func
           })
         });
     }
-    res.redirect("../../categories/"+req.params.id)
 })
 
 router.delete('/products/:id/delete',requireLogin,async function(req,res){
     var val = await query.deleteProduct(req.params.id)
+    await navigation_content();
+    res.redirect("../../products");
     if(val[0] == true){
         val[1].images.forEach(image => {
             console.log("public/img/"+image.filename)
@@ -300,16 +319,11 @@ router.delete('/products/:id/delete',requireLogin,async function(req,res){
             })
         });
     }
-    res.redirect("../../products");
 })
 
 router.delete('/products/:product_id/models/:model_id/delete',requireLogin,async function(req,res){
     var val = await query.deleteModel(req.params.product_id,req.params.model_id)
     res.redirect("../../../../products/"+req.params.product_id);
-})
-
-router.delete('/categories/:id/delete',requireLogin,async function(req,res){
-    var val = await query.deleteCategory(req.params.id)
     if(val[0] == true){
         val[1].images.forEach(image => {
             console.log("public/img/"+image.filename)
@@ -321,7 +335,58 @@ router.delete('/categories/:id/delete',requireLogin,async function(req,res){
             })
         });
     }
+})
+
+router.delete('/categories/:id/delete',requireLogin,async function(req,res){
+    var val = await query.deleteCategory(req.params.id)
+    await navigation_content();
     res.redirect("../../categories");
+    if(val[0] == true){
+        val[1].images.forEach(image => {
+            console.log("public/img/"+image.filename)
+            fs.unlink("public/img/"+image.filename, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+            } 
+            })
+        });
+    }
+})
+
+router.get('/brochures',requireLogin,function(req,res){
+    fs.readdir(directoryPath, function (err, files) {
+        //handling error
+        let brochures = []
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            brochures.push(file)
+        });
+        res.render('admin/brochures',{
+            brochures:brochures
+        })
+    })
+})
+
+router.get('/addBrochure',requireLogin,function(req,res){
+    res.render('admin/addBrochure')
+})
+
+router.post('/addBrochure',requireLogin,upload1.array('brochures'),function(req,res){
+    res.redirect('/admin/brochures');
+})
+
+router.delete('/brochures/:name/delete',requireLogin,function(req,res){
+    fs.unlink("public/brochures/"+req.params.name, (err) => {
+        if (err) {
+            console.error(err)
+        }
+        res.redirect('/admin/brochures');
+    });
 })
 
 router.get('/login',function(req,res){
@@ -373,5 +438,22 @@ function convert_to_object(str){
     }
     return details
 }
+
+
+async function navigation_content(){
+    constant.categories = await query.fetchAllCategories();
+    let products_fromdb = await query.fetchAllProducts();
+    let products_temp = [];
+    products_fromdb.forEach(product =>{
+        let temp = {
+            name:product.name,
+            _id:product._id,
+            category:product.category
+        }
+        products_temp.push(temp);
+    })
+    constant.products = products_temp;
+}
+
 
 module.exports = router;

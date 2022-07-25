@@ -43,46 +43,18 @@ header#header.header.fixed-top
           a.nav-link.dropdown-toggle(href='#' data-bs-toggle='dropdown')  Products  
           .dropdown-menu.megamenu(role='menu')
             .row.g-3
+             each category in nav_categories
               .col-lg-3.col-6
                 .col-megamenu
-                  h6.title &nbsp;AMPER HOUR METER
-                  a(href='#') IM2501
-                  a(href='#') IM2502C
-                  a(href='#') IM2503
-                  a(href='#') IM2505
-                  a(href='#') IM2506
+                 a(href='/category/'+category._id)
+                  h6.title &nbsp;
+                      = category.name
+                  each product in nav_products 
+                   if product.category == category.name
+                    a(href='/products/'+product._id)
+                      = product.name
                 // col-megamenu.//
               // end col-3
-              .col-lg-3.col-6
-                .col-megamenu
-                  h6.title Title Menu Four
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                // col-megamenu.//
-              // end col-3
-              .col-lg-3.col-6
-                .col-megamenu
-                  h6.title Title Menu Four
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                // col-megamenu.//
-              .col-lg-3.col-6
-                .col-megamenu
-                  h6.title Title Menu Four
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
-                  a(href='#') Custom Menu
                 // col-megamenu.//
               // end col-3
             // end row
