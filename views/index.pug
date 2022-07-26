@@ -227,20 +227,32 @@ block content
        p Our Best Sellers 
      .container(data-aos='fade-up')
        .row.gy-4(data-aos='fade-left')
+        -let count = 1
         each product in bseller
-         .col-lg-3.col-md-6(data-aos='zoom-in' data-aos-delay='100')
-           .box.bseller
-             h3(style='color: #f79633;') 
-                 = product.name
-             img.img-fluid(src="/img/"+product.images[0].filename alt='')
-             ul
-               li 
-                 = product.description.substr(0, 150) + '...'
-               //li Nec feugiat nisl
-               //li Nulla at volutpat dola
-               //li.na Pharetra massa
-               //li.na Massa ultricies mi
-             a.btn-buy(href='/products/'+product._id) Read More
+          .col-lg-3.col-md-6(data-aos='zoom-in' data-aos-delay='100')
+            .box.bseller
+              if count == 1
+                h3(style='color: #f79633;') 
+                  = product.name
+              else if count == 2
+                h3(style='color: #ed3237;') 
+                  = product.name
+              else if count == 3
+                h3(style='color: #66bd5d;') 
+                  = product.name
+              else 
+                h3(style='color: #1f5ca9;') 
+                  = product.name
+              img.img-fluid(src="/img/"+product.images[0].filename alt='')
+              ul
+                li 
+                  = product.description.substr(0, 150) + '...'
+                //li Nec feugiat nisl
+                //li Nulla at volutpat dola
+                //li.na Pharetra massa
+                //li.na Massa ultricies mi
+              a.btn-buy(href='/products/'+product._id) Read More
+          -count = count + 1
 
    // End Pricing Section / best sellers
    // ======= About Section =======
@@ -301,7 +313,6 @@ block content
    section#values.values
      .container(data-aos='fade-up')
        header.section-header
-         h2 Policy
          p Our Quality Policy
        .row
          .col-lg-4.col-md-6.portfolio-item.filter-app
@@ -394,7 +405,6 @@ block content
    section#testimonials.testimonials
      .container(data-aos='fade-up')
        header.section-header
-         h2 Testimonials
          p What they are saying about us
        .testimonials-slider.swiper(data-aos='fade-up' data-aos-delay='200')
          .swiper-wrapper
@@ -452,7 +462,6 @@ block content
    section#team.team
      .container(data-aos='fade-up')
        header.section-header
-         h2 Leaders
          p Our Leaders on the path to sucess
        .row.gy-2
          .col-lg-3.col-md-6.d-flex.align-items-center(data-aos='fade-up' data-aos-delay='100')

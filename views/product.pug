@@ -24,8 +24,10 @@ block content
       ol
         li
           a(href='/') Home
-        li Portfolio Details
-      h2 Portfolio Details
+        li
+          = product.category
+      h2 
+        = product.name
   // End Breadcrumbs
   // ======= Portfolio Details Section =======
   section#portfolio-details.portfolio-details
@@ -130,18 +132,19 @@ block content
   section#portfolio.portfolio
    .row.gy-4.portfolio-container(data-aos='fade-up' data-aos-delay='200')
     each model in product.models
-     .col-lg-4.col-md-6.portfolio-item.filter-app
-      center
-        img.img-fluid(src='/img/'+model.images[0].filename alt='' width='250' height='500')
-        br
-        .col-lg-10
-          .portfolio-description
-            br
-            h3 
-                = model.name
-            -let x = model.description.split("\n")
-            ul
-            each line in x
-              li
-                = line
-    
+      .col-lg-4.col-md-6.portfolio-item.filter-app
+        center 
+          img.img-fluid(src='/img/'+model.images[0].filename alt='' width='250' height='500' )
+          br
+          center 
+            .col-lg-10
+              .portfolio-description(align='center')
+                h3 
+                  = model.name
+                -let x = model.description.split("\n")
+                ul
+                each line in x
+                  li(align='left')
+                    = line
+
+      

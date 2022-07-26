@@ -257,9 +257,9 @@ module.exports = {
                 $set:{"name":product.name,
                     "description":product.description,
                     "category":product.category,
-                    "subCategory":product.subCategory,
                     "price":product.price,
-                    "details":product.details
+                    "details":product.details,
+                    "brochure":product.brochure
                },$push:{"images":{$each:product.uploadImages}}
             });
             result = await client.db("kvar").collection("products").findOneAndUpdate({_id:ObjectId(id)},{
