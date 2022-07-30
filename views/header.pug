@@ -28,6 +28,7 @@ head
     * License: https://bootstrapmade.com/license/
     ========================================================
 link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+script(src="https://www.google.com/recaptcha/api.js")
 // ======= Header =======
 header#header.header.fixed-top
   .container-fluid.container-xl.d-flex.align-items-center.justify-content-between
@@ -39,20 +40,23 @@ header#header.header.fixed-top
           a.nav-link.scrollto.active(href='/') Home
         li
           a.nav-link.scrollto(href='/about') About Us
-        li.nav-item.dropdown.has-megamenu
-          a.nav-link.dropdown-toggle(href='#' data-bs-toggle='dropdown')  Products  
-          .dropdown-menu.megamenu(role='menu')
-            .row.g-3
-             each category in nav_categories
-              .col-lg-3.col-6
-                .col-megamenu
-                 a(href='/category/'+category._id)
-                  h6.title &nbsp;
-                      = category.name
+        li.dropdown
+          a(href='#')
+            span Products 
+            i.bi.bi-chevron-down 
+          ul 
+            each category in nav_categories
+              li.dropdown
+                a(href='/category/'+category._id)
+                  span
+                    = category.name
+                  i.bi.bi-chevron-right
+                ul 
                   each product in nav_products 
-                   if product.category == category.name
-                    a(href='/products/'+product._id)
-                      = product.name
+                    if product.category == category.name
+                      li 
+                        a(href='/products/'+product._id)
+                          = product.name
                 // col-megamenu.//
               // end col-3
                 // col-megamenu.//

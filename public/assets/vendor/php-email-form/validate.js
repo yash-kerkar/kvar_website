@@ -3,7 +3,7 @@
 * URL: https://bootstrapmade.com/php-email-form/
 * Author: BootstrapMade.com
 */
-(function () {
+/*(function () {
   "use strict";
 
   let forms = document.querySelectorAll('.php-email-form');
@@ -16,6 +16,7 @@
 
       let action = thisForm.getAttribute('action');
       let recaptcha = thisForm.getAttribute('data-recaptcha-site-key');
+      console.log(recaptcha)
       
       if( ! action ) {
         displayError(thisForm, 'The form action property is not set!')
@@ -28,8 +29,8 @@
       let formData = new FormData( thisForm );
 
       if ( recaptcha ) {
-        if(typeof grecaptcha !== "undefined" ) {
-          grecaptcha.ready(function() {
+        if(typeof recaptcha !== "undefined" ) {
+          recaptcha.ready(function() {
             try {
               grecaptcha.execute(recaptcha, {action: 'php_email_form_submit'})
               .then(token => {
@@ -56,6 +57,7 @@
       headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
     .then(response => {
+      console.log(response.ok)
       if( response.ok ) {
         return response.text()
       } else {
@@ -63,6 +65,7 @@
       }
     })
     .then(data => {
+      console.log(data)
       thisForm.querySelector('.loading').classList.remove('d-block');
       if (data.trim() == 'OK') {
         thisForm.querySelector('.sent-message').classList.add('d-block');
@@ -82,4 +85,4 @@
     thisForm.querySelector('.error-message').classList.add('d-block');
   }
 
-})();
+})();*/

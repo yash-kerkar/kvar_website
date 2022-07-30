@@ -71,8 +71,9 @@ block content
                    br
                    | 9:00AM - 06:00PM
          .col-lg-6
-           form.php-email-form(action='forms/contact.php' method='post')
+           form.php-email-form(action='/sendEmail' method='post')
              .row.gy-4
+               .g-recaptcha(data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI")
                .col-md-6
                  input.form-control(type='text' name='name' placeholder='Your Name' required='')
                .col-md-6

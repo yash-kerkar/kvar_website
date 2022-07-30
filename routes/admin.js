@@ -21,12 +21,41 @@ const { model } = require('mongoose');
         callback(null, file.originalname);  
      }  
     });
+    storage2 = multer.diskStorage({  
+        destination: function (req, file, callback) {  
+        callback(null, './public/gallery/imgs');  
+     },  
+        filename: function (req, file, callback) { 
+        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));  
+     }  
+    });
+    storage3 = multer.diskStorage({  
+        destination: function (req, file, callback) {  
+        callback(null, './public/gallery/vids');  
+     },  
+        filename: function (req, file, callback) { 
+        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));  
+     }  
+    });
+    storage4 = multer.diskStorage({  
+        destination: function (req, file, callback) {  
+        callback(null, './public/gallery/presentation');  
+     },  
+        filename: function (req, file, callback) { 
+        callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));  
+     }  
+    });
     upload = multer({ storage: storage }) 
     upload1 = multer({ storage: storage1 }) 
+    upload2 = multer({ storage: storage2 }) 
+    upload3 = multer({ storage: storage3 }) 
+    upload4 = multer({ storage: storage4 }) 
     bcrypt = require('bcrypt');
     query = require('../DBqueries');
     constant = require('../constant');
 const directoryPath = path.join(__dirname, '../public/brochures');
+const galleryPathImages = path.join(__dirname,'../public/gallery/imgs')
+const galleryPathVideos = path.join(__dirname,'../public/gallery/vids')
 
 const requireLogin = (req,res,next) => {
     if(!req.session.user_id) return res.redirect("/admin/login");
@@ -372,12 +401,73 @@ router.get('/brochures',requireLogin,function(req,res){
     })
 })
 
+router.get('/galleryImages',requireLogin,function(req,res){
+    fs.readdir(galleryPathImages, function (err, files) {
+        //handling error
+        let images = []
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            images.push(file)
+        });
+        res.render('admin/galleryImages',{
+            images:images
+        })
+    })
+})
+
+router.get('/galleryVideos',requireLogin,function(req,res){
+    fs.readdir(galleryPathVideos, function (err, files) {
+        //handling error
+        let videos = []
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            videos.push(file)
+        });
+        res.render('admin/galleryVideos',{
+            videos:videos
+        })
+    })
+})
+
 router.get('/addBrochure',requireLogin,function(req,res){
-    res.render('admin/addBrochure')
+    res.render('admin/addBrochure',{
+        type:"Brochures",
+        link:"/admin/addBrochure"
+    })
+})
+
+router.get('/addGalleryImages',requireLogin,function(req,res){
+    res.render('admin/addBrochure',{
+        type:"Images for Gallery",
+        link:"/admin/addGalleryImages"
+    })
+})
+
+router.get('/addGalleryVideos',requireLogin,function(req,res){
+    res.render('admin/addBrochure',{
+        type:"Videos for Gallery",
+        link:"/admin/addGalleryVideos"
+    })
 })
 
 router.post('/addBrochure',requireLogin,upload1.array('brochures'),function(req,res){
     res.redirect('/admin/brochures');
+})
+
+router.post('/addGalleryImages',requireLogin,upload2.array('brochures'),function(req,res){
+    res.redirect('/admin/galleryImages');
+})
+
+router.post('/addGalleryVideos',requireLogin,upload3.array('brochures'),function(req,res){
+    res.redirect('/admin/galleryVideos');
 })
 
 router.delete('/brochures/:name/delete',requireLogin,function(req,res){
@@ -386,6 +476,24 @@ router.delete('/brochures/:name/delete',requireLogin,function(req,res){
             console.error(err)
         }
         res.redirect('/admin/brochures');
+    });
+})
+
+router.delete('/galleryImages/:name/delete',requireLogin,function(req,res){
+    fs.unlink("public/gallery/imgs/"+req.params.name, (err) => {
+        if (err) {
+            console.error(err)
+        }
+        res.redirect('/admin/galleryImages');
+    });
+})
+
+router.delete('/galleryVideos/:name/delete',requireLogin,function(req,res){
+    fs.unlink("public/gallery/vids/"+req.params.name, (err) => {
+        if (err) {
+            console.error(err)
+        }
+        res.redirect('/admin/galleryVideos');
     });
 })
 

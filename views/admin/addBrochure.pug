@@ -2,9 +2,11 @@ extends ./header.pug
 block append head 
   link(href='/css/addProduct.css', rel='stylesheet')
 block content
-    form(action = "/admin/addBrochure", enctype="multipart/form-data" method = "POST" id="product" style="padding:10px; margin:5px; text-align:center;")
-      label(for ="brochures") Upload Brochures:
+    form(action = link, enctype="multipart/form-data" method = "POST" id="product" style="padding:10px; margin:5px; text-align:center;")
+      label(for ="brochures") Upload 
+        = type
       input(type = "file" name="brochures" required multiple) 
       br
       br
-      button(class="btn btn-primary" type = "submit") Add brochures
+      button(class="btn btn-primary" type = "submit") Add 
+        = type

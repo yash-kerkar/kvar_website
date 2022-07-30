@@ -6,6 +6,19 @@ var express = require('express');
     app = express();
     query = require('./DBqueries');
     constant = require('./constant');
+    nodemailer = require('nodemailer');
+    transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'kerkaryash4@gmail.com',
+          pass: 'unwxtdzacshzucok'
+        }
+    });
+    axios = require("axios");
+    directoryPath = path.join(__dirname, './public/brochures');
+    galleryPathImages = path.join(__dirname,'./public/gallery/imgs')
+    galleryPathVideos = path.join(__dirname,'./public/gallery/vids')
+
 app.set('views','./views');
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'pug');
@@ -29,7 +42,7 @@ app.use('/admin',adminRoutes)
     })
 })*/
 const PORT = process.env.PORT || 3000;
-
+const RECAPTCHA_SECRET = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
 
 app.get('/',async function(req,res){
     var bseller = await query.fetchBSellers();
@@ -91,6 +104,76 @@ app.get('/blogs',function(req,res){
         nav_categories:constant.categories
     });
 })
+
+app.get('/galleryImages',function(req,res){
+    fs.readdir(galleryPathImages, function (err, files) {
+        //handling error
+        let images = []
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            images.push(file)
+        });
+        res.render('galleryImages',{
+            nav_products:constant.products,
+            nav_categories:constant.categories,
+            images:images
+        })
+    })
+})
+
+app.get('/brochures',function(req,res){
+    fs.readdir(directoryPath, function (err, files) {
+        //handling error
+        let brochures = []
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        //listing all files using forEach
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            brochures.push(file)
+        });
+        res.render('brochures',{
+            nav_products:constant.products,
+            nav_categories:constant.categories,
+            brochures:brochures
+        })
+    })
+})
+
+/*app.post('/sendEmail',async function(request,response){
+    var recaptcha_url = "https://www.google.com/recaptcha/api/siteverify?";
+    recaptcha_url += "secret=" + RECAPTCHA_SECRET + "&";
+    recaptcha_url += "response=" + request.body["g-recaptcha-response"] + "&";
+    recaptcha_url += "remoteip=" + request.connection.remoteAddress;
+    try {
+		const res = await axios.post(recaptcha_url);
+        console.log(res)
+        if(res.data.success){
+            var mailOptions = {
+                from: 'kerkaryash4@gmail.com',
+                to: 'yashkerkar1999@gmail.com',
+                subject: request.body.subject,
+                text: "Client Name: "+ request.body.name + "/n" + "Client Email: " + request.body.email + "/n" + "Message: " + request.body.message
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+            });
+            response.send("Email Sent")
+        }
+        else response.send("Recaptcha failed")
+	} catch (err) {
+		response.status(500).json({ message: err });
+	}
+})*/
 
 app.get('*', function(req, res){
     res.send('Sorry, this is an invalid URL.');
